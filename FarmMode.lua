@@ -350,7 +350,7 @@ local function CreateOptions()
     title:SetFont("Fonts\\FRIZQT__.TTF", 16, "")
     title:SetTextColor(C_ACCENT[1], C_ACCENT[2], C_ACCENT[3])
     title:SetPoint("TOPLEFT", 16, -16)
-    title:SetText("FarmMode")
+    title:SetText("FarmMode Options")
 
     -- Subtitle
     local desc = panel:CreateFontString(nil, "OVERLAY")
