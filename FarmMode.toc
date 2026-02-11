@@ -1,7 +1,8 @@
 ## Interface: 20505
 ## Title: FarmMode
-## Notes: Type /farm to center and enlarge the minimap for gathering.
+## Notes: Type /farm to toggle. /farm config for settings.
 ## Author: paradosi-Dreamscythe
-## Version: 1.0
+## Version: 1.2
+## SavedVariables: FarmModeDB
 
 FarmMode.lua
