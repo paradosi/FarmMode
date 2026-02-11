@@ -1,5 +1,5 @@
 <Bindings>
-  <Binding name="FARMMODE_TOGGLE" header="FARMMODE">
+  <Binding name="FARMMODE_TOGGLE" category="FarmMode">
     FarmMode_Toggle()
   </Binding>
 </Bindings>
