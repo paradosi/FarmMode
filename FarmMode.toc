@@ -1,0 +1,7 @@
+## Interface: 20505
+## Title: FarmMode
+## Notes: Type /farm to center and enlarge the minimap for gathering.
+## Author: paradosi-Dreamscythe
+## Version: 1.0
+
+FarmMode.lua
