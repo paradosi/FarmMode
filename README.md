@@ -2,7 +2,7 @@
 
 A lightweight WoW addon that centers and enlarges the minimap for easier gathering routes.
 
-Type `/farm` to toggle. Type `/farm` again to restore.
+Type `/farm` to toggle. Type `/farm config` for settings.
 
 ## Screenshots
 
@@ -11,6 +11,18 @@ Type `/farm` to toggle. Type `/farm` again to restore.
 
 **Farm Mode On** — minimap centered and enlarged
 ![Farm Mode On](screenshots/farm-on.jpg)
+
+**Settings Panel** — `/farm config`
+![Settings Panel](screenshots/farm-config.jpg)
+
+## Features
+
+- Configurable scale, zoom, opacity, and position
+- Draggable minimap while in farm mode
+- Hide minimap clutter (zoom buttons, tracking, zone text)
+- Key binding support (Key Bindings > FarmMode)
+- ElvUI-styled settings panel
+- Settings persist across sessions
 
 ## Install
 
@@ -21,7 +33,7 @@ Type `/farm` to toggle. Type `/farm` again to restore.
 ## Usage
 
 - `/farm` — Toggle farm mode on/off
-- Chat message confirms current state
+- `/farm config` — Open settings panel
 
 ## Compatibility
 
