@@ -166,51 +166,66 @@ local C_TRACK   = {0.12, 0.12, 0.12}
         t:SetColorTexture(0, 0, 0, 1)
     end
 
-    -- Styled slider with fill bar + editbox
-    local function MakeSlider(anchor, yOff, labelText, minVal, maxVal, step, fmt)
-        -- Label
-        local label = panel:CreateFontString(nil, "OVERLAY")
+    -- ElvUI-style slider: label above, thin track, min/max flanking, editbox below, mouse wheel
+    local function MakeSlider(anchor, yOff, labelText, minVal, maxVal, step, fmt, wheelStep)
+        -- Wrapper frame for anchor chain (encompasses label + track + editbox)
+        local wrap = CreateFrame("Frame", nil, panel)
+        wrap:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, yOff)
+        wrap:SetSize(270, 48)
+
+        -- Label centered above track
+        local label = wrap:CreateFontString(nil, "OVERLAY")
         label:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
         label:SetTextColor(C_ACCENT[1], C_ACCENT[2], C_ACCENT[3])
-        label:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, yOff)
+        label:SetPoint("TOP", wrap, "TOP", 0, 0)
         label:SetText(labelText)
 
-        -- Value readout next to label
-        local valText = panel:CreateFontString(nil, "OVERLAY")
-        valText:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
-        valText:SetTextColor(1, 1, 1)
-        valText:SetPoint("LEFT", label, "RIGHT", 6, 0)
+        -- Min / max labels (positioned after slider creation)
+        local minLbl = wrap:CreateFontString(nil, "OVERLAY")
+        minLbl:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+        minLbl:SetTextColor(0.5, 0.5, 0.5)
 
-        -- Slider track
-        local s = CreateFrame("Slider", nil, panel)
-        s:SetPoint("TOPLEFT", label, "BOTTOMLEFT", 0, -5)
-        s:SetSize(200, 12)
+        local maxLbl = wrap:CreateFontString(nil, "OVERLAY")
+        maxLbl:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
+        maxLbl:SetTextColor(0.5, 0.5, 0.5)
+
+        if step >= 1 then
+            minLbl:SetText(tostring(math.floor(minVal)))
+            maxLbl:SetText(tostring(math.floor(maxVal)))
+        else
+            minLbl:SetText(string.format("%.1f", minVal))
+            maxLbl:SetText(string.format("%.1f", maxVal))
+        end
+
+        -- Thin slider track
+        local s = CreateFrame("Slider", nil, wrap)
+        s:SetPoint("TOP", label, "BOTTOM", 0, -4)
+        s:SetSize(180, 6)
+        s:SetOrientation("HORIZONTAL")
         s:SetMinMaxValues(minVal, maxVal)
         s:SetValueStep(step)
         s:SetObeyStepOnDrag(false)
         s:EnableMouse(true)
+        s:EnableMouseWheel(true)
 
         local bg = s:CreateTexture(nil, "BACKGROUND")
         bg:SetAllPoints()
         bg:SetColorTexture(C_TRACK[1], C_TRACK[2], C_TRACK[3], 1)
         AddBorder(s)
 
-        -- Accent fill bar
-        local fill = s:CreateTexture(nil, "ARTWORK")
-        fill:SetPoint("TOPLEFT")
-        fill:SetPoint("BOTTOMLEFT")
-        fill:SetColorTexture(C_ACCENT[1], C_ACCENT[2], C_ACCENT[3], 0.35)
-        fill:SetWidth(1)
+        -- Anchor min/max labels to track
+        minLbl:SetPoint("RIGHT", s, "LEFT", -6, 0)
+        maxLbl:SetPoint("LEFT", s, "RIGHT", 6, 0)
 
-        -- Thumb
+        -- Small square thumb
         s:SetThumbTexture("Interface\\Buttons\\WHITE8x8")
         local thumb = s:GetThumbTexture()
         thumb:SetVertexColor(C_ACCENT[1], C_ACCENT[2], C_ACCENT[3], 1)
-        thumb:SetSize(8, 12)
+        thumb:SetSize(10, 12)
 
-        -- Editbox
-        local eb = CreateFrame("EditBox", nil, panel)
-        eb:SetPoint("LEFT", s, "RIGHT", 10, 0)
+        -- Editbox centered below track
+        local eb = CreateFrame("EditBox", nil, wrap)
+        eb:SetPoint("TOP", s, "BOTTOM", 0, -4)
         eb:SetSize(52, 18)
         eb:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
         eb:SetAutoFocus(false)
@@ -222,11 +237,8 @@ local C_TRACK   = {0.12, 0.12, 0.12}
         eBg:SetColorTexture(C_EDITBG[1], C_EDITBG[2], C_EDITBG[3], 1)
         AddBorder(eb)
 
-        -- Display helper
+        -- Display helper (editbox only, no separate value readout)
         local function Display(value)
-            local fmtText = fmt and string.format(fmt, value) or tostring(value)
-            valText:SetText(fmtText)
-            -- Editbox shows bare number
             local bare
             if step >= 1 then
                 bare = tostring(math.floor(value + 0.5))
@@ -234,9 +246,6 @@ local C_TRACK   = {0.12, 0.12, 0.12}
                 bare = string.format("%." .. math.max(1, math.ceil(-math.log10(step))) .. "f", value)
             end
             if not eb:HasFocus() then eb:SetText(bare) end
-            -- Fill width
-            local pct = (value - minVal) / (maxVal - minVal)
-            fill:SetWidth(math.max(1, s:GetWidth() * pct))
         end
 
         s:SetScript("OnValueChanged", function(self, value)
@@ -247,7 +256,15 @@ local C_TRACK   = {0.12, 0.12, 0.12}
                 value = math.floor(value * m + 0.5) / m
             end
             Display(value)
-            if self.onChange then self.onChange(value) end
+            if wrap.onChange then wrap.onChange(value) end
+        end)
+
+        -- Mouse wheel support
+        local wStep = wheelStep or step
+        s:SetScript("OnMouseWheel", function(self, delta)
+            local val = self:GetValue() + (delta * wStep)
+            val = math.max(minVal, math.min(maxVal, val))
+            self:SetValue(val)
         end)
 
         eb:SetScript("OnEnterPressed", function(self)
@@ -272,8 +289,11 @@ local C_TRACK   = {0.12, 0.12, 0.12}
             self:ClearFocus()
         end)
 
-        s._anchor = s  -- next element anchors to the slider
-        return s
+        -- Proxy SetValue / GetValue so callers treat the wrapper like a slider
+        function wrap:SetValue(v) s:SetValue(v) end
+        function wrap:GetValue() return s:GetValue() end
+
+        return wrap
     end
 
     -- Styled checkbox
@@ -371,25 +391,25 @@ local C_TRACK   = {0.12, 0.12, 0.12}
     headerLine:SetColorTexture(C_ACCENT[1], C_ACCENT[2], C_ACCENT[3], 0.4)
 
     -- Sliders
-    local scaleSlider = MakeSlider(headerLine, -14, "Scale", 1.0, 3.0, 0.05, "%.2f")
+    local scaleSlider = MakeSlider(headerLine, -12, "Scale", 1.0, 3.0, 0.05, "%.2f", 0.1)
     scaleSlider.onChange = function(v)
         db.scale = v
         if farming then Minimap:SetScale(v) end
     end
 
-    local zoomSlider = MakeSlider(scaleSlider, -20, "Zoom Level", 0, 5, 1, "%d")
+    local zoomSlider = MakeSlider(scaleSlider, -6, "Zoom Level", 0, 5, 1, "%d")
     zoomSlider.onChange = function(v)
         db.zoom = v
         if farming then Minimap:SetZoom(v) end
     end
 
-    local opacitySlider = MakeSlider(zoomSlider, -20, "Opacity", 30, 100, 1, "%d%%")
+    local opacitySlider = MakeSlider(zoomSlider, -6, "Opacity", 30, 100, 1, "%d%%", 5)
     opacitySlider.onChange = function(v)
         db.opacity = v
         if farming then Minimap:SetAlpha(v / 100) end
     end
 
-    local xSlider = MakeSlider(opacitySlider, -20, "X Offset  (Left / Right)", -500, 500, 1, "%d")
+    local xSlider = MakeSlider(opacitySlider, -6, "X Offset  (Left / Right)", -500, 500, 1, "%d", 10)
     xSlider.onChange = function(v)
         db.xOffset = v
         if farming then
@@ -398,7 +418,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
         end
     end
 
-    local ySlider = MakeSlider(xSlider, -20, "Y Offset  (Down / Up)", -500, 500, 1, "%d")
+    local ySlider = MakeSlider(xSlider, -6, "Y Offset  (Down / Up)", -500, 500, 1, "%d", 10)
     ySlider.onChange = function(v)
         db.yOffset = v
         if farming then
@@ -408,7 +428,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
     end
 
     -- Checkboxes
-    local dragCheck = MakeCheck(ySlider, -18, "Allow dragging minimap in farm mode")
+    local dragCheck = MakeCheck(ySlider, -4, "Allow dragging minimap in farm mode")
     dragCheck.onChange = function(checked)
         db.draggable = checked
         if farming then
