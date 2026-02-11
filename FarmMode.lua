@@ -464,7 +464,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
     url:SetFont("Fonts\\FRIZQT__.TTF", 10, "")
     url:SetTextColor(C_ACCENT[1], C_ACCENT[2], C_ACCENT[3], 0.6)
     url:SetPoint("TOPLEFT", hint, "BOTTOMLEFT", 0, -6)
-    url:SetText("github.com/paradosi/FarmMode")
+    url:SetText("github.com/paradosi/FarmMode  |  paradosi @ Dreamscythe")
 
     --------------------------------------------------------
     -- OnShow — sync UI to saved values

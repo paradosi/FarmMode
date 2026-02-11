@@ -1,6 +1,6 @@
 ## Interface: 20505
-## Title: FarmMode
-## Notes: Type /farm to toggle. /farm config for settings.
+## Title: |cff00b3ffFarmMode|r
+## Notes: |cff00b3ffType /farm to toggle. /farm config for settings.|r
 ## Author: paradosi-Dreamscythe
 ## Version: 1.2
 ## IconTexture: Interface\AddOns\FarmMode\farm_mode_warcraft_64
