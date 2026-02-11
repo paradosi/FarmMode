@@ -187,7 +187,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
         s:SetSize(200, 12)
         s:SetMinMaxValues(minVal, maxVal)
         s:SetValueStep(step)
-        s:SetObeyStepOnDrag(true)
+        s:SetObeyStepOnDrag(false)
         s:EnableMouse(true)
 
         local bg = s:CreateTexture(nil, "BACKGROUND")
@@ -371,7 +371,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
     headerLine:SetColorTexture(C_ACCENT[1], C_ACCENT[2], C_ACCENT[3], 0.4)
 
     -- Sliders
-    local scaleSlider = MakeSlider(headerLine, -14, "Scale", 1.0, 3.0, 0.1, "%.1f")
+    local scaleSlider = MakeSlider(headerLine, -14, "Scale", 1.0, 3.0, 0.05, "%.2f")
     scaleSlider.onChange = function(v)
         db.scale = v
         if farming then Minimap:SetScale(v) end
@@ -383,13 +383,13 @@ local C_TRACK   = {0.12, 0.12, 0.12}
         if farming then Minimap:SetZoom(v) end
     end
 
-    local opacitySlider = MakeSlider(zoomSlider, -20, "Opacity", 30, 100, 5, "%d%%")
+    local opacitySlider = MakeSlider(zoomSlider, -20, "Opacity", 30, 100, 1, "%d%%")
     opacitySlider.onChange = function(v)
         db.opacity = v
         if farming then Minimap:SetAlpha(v / 100) end
     end
 
-    local xSlider = MakeSlider(opacitySlider, -20, "X Offset  (Left / Right)", -500, 500, 10, "%d")
+    local xSlider = MakeSlider(opacitySlider, -20, "X Offset  (Left / Right)", -500, 500, 1, "%d")
     xSlider.onChange = function(v)
         db.xOffset = v
         if farming then
@@ -398,7 +398,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
         end
     end
 
-    local ySlider = MakeSlider(xSlider, -20, "Y Offset  (Down / Up)", -500, 500, 10, "%d")
+    local ySlider = MakeSlider(xSlider, -20, "Y Offset  (Down / Up)", -500, 500, 1, "%d")
     ySlider.onChange = function(v)
         db.yOffset = v
         if farming then
