@@ -2,7 +2,7 @@
 ## Title: |cff00b3ffFarmMode|r
 ## Notes: |cff00b3ffType /farm to toggle. /farm config for settings.|r
 ## Author: paradosi-Dreamscythe
-## Version: 1.2
+## Version: 1.3
 ## Category-enUS: Map
 ## IconTexture: Interface\AddOns\FarmMode\farm_mode_warcraft_64
 ## SavedVariables: FarmModeDB
