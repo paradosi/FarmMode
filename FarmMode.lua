@@ -127,8 +127,7 @@ local function CreateOptions()
 
     -- Color palette
     local C_ACCENT  = {0.00, 0.70, 1.00}
-    local C_GOLD    = {1.00, 0.82, 0.00}
-    local C_TRACK   = {0.12, 0.12, 0.12}
+local C_TRACK   = {0.12, 0.12, 0.12}
     local C_EDITBG  = {0.08, 0.08, 0.08}
     local C_HOVER   = {0.25, 0.25, 0.25}
 
@@ -172,7 +171,7 @@ local function CreateOptions()
         -- Label
         local label = panel:CreateFontString(nil, "OVERLAY")
         label:SetFont("Fonts\\FRIZQT__.TTF", 11, "")
-        label:SetTextColor(C_GOLD[1], C_GOLD[2], C_GOLD[3])
+        label:SetTextColor(C_ACCENT[1], C_ACCENT[2], C_ACCENT[3])
         label:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, yOff)
         label:SetText(labelText)
 
@@ -345,11 +344,17 @@ local function CreateOptions()
     -- Layout
     --------------------------------------------------------
 
+    -- Icon
+    local icon = panel:CreateTexture(nil, "ARTWORK")
+    icon:SetSize(32, 32)
+    icon:SetPoint("TOPLEFT", 16, -12)
+    icon:SetTexture("Interface\\AddOns\\FarmMode\\farm_mode_warcraft_64")
+
     -- Title
     local title = panel:CreateFontString(nil, "OVERLAY")
     title:SetFont("Fonts\\FRIZQT__.TTF", 16, "")
     title:SetTextColor(C_ACCENT[1], C_ACCENT[2], C_ACCENT[3])
-    title:SetPoint("TOPLEFT", 16, -16)
+    title:SetPoint("LEFT", icon, "RIGHT", 8, 0)
     title:SetText("FarmMode")
 
     -- Subtitle
