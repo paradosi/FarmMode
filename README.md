@@ -2,7 +2,7 @@
 
 A lightweight WoW addon that centers and enlarges the minimap for easier gathering routes.
 
-Type `/farm` to toggle. Type `/farm config` for settings.
+Type `/farm` to toggle. Type `/farm` again to restore.
 
 ## Screenshots
 
@@ -11,18 +11,6 @@ Type `/farm` to toggle. Type `/farm config` for settings.
 
 **Farm Mode On** — minimap centered and enlarged
 ![Farm Mode On](screenshots/farm-on.jpg)
-
-**Settings Panel** — `/farm config`
-![Settings Panel](screenshots/farm-config.jpg)
-
-## Features
-
-- Configurable scale, zoom, opacity, and position
-- Draggable minimap while in farm mode
-- Hide minimap clutter (zoom buttons, tracking, zone text)
-- Key binding support (Key Bindings > FarmMode)
-- ElvUI-styled settings panel
-- Settings persist across sessions
 
 ## Install
 
@@ -34,6 +22,24 @@ Type `/farm` to toggle. Type `/farm config` for settings.
 
 - `/farm` — Toggle farm mode on/off
 - `/farm config` — Open settings panel
+
+## Settings
+
+Open with `/farm config` or via Interface > AddOns > FarmMode.
+
+- **Scale** — Minimap size (1.0x to 3.0x)
+- **Zoom Level** — Minimap zoom (0 = zoomed out, 5 = zoomed in)
+- **Opacity** — Minimap transparency (30% to 100%)
+- **X / Y Offset** — Position on screen
+- **Draggable** — Left-click drag the minimap to reposition while in farm mode
+- **Hide Clutter** — Hides minimap buttons (zoom, tracking, zone text) for a clean view
+- **Reset Defaults** — Restore all settings to defaults
+
+All settings persist across sessions and apply live.
+
+## Keybinding
+
+Bind a hotkey in **Options > Keybindings > FarmMode** to toggle without typing `/farm`.
 
 ## Compatibility
 
