@@ -27,6 +27,8 @@ Type `/farm` to toggle. Type `/farm` again to restore.
 
 Open with `/farm config` or via Interface > AddOns > FarmMode.
 
+![Settings Panel](screenshots/farm-config.jpg)
+
 - **Scale** — Minimap size (1.0x to 3.0x)
 - **Zoom Level** — Minimap zoom (0 = zoomed out, 5 = zoomed in)
 - **Opacity** — Minimap transparency (30% to 100%)
@@ -40,6 +42,8 @@ All settings persist across sessions and apply live.
 ## Keybinding
 
 Bind a hotkey in **Options > Keybindings > FarmMode** to toggle without typing `/farm`.
+
+![Keybinding](screenshots/farm-keybind.jpg)
 
 ## Compatibility
 
