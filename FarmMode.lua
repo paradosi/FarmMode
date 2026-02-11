@@ -66,23 +66,40 @@ end
 local function EnableDrag()
     Minimap:SetMovable(true)
     Minimap:RegisterForDrag("LeftButton")
-    Minimap:SetScript("OnDragStart", function(self) self:StartMoving() end)
+    Minimap:SetScript("OnDragStart", function(self)
+        local cx, cy = GetCursorPosition()
+        local s = UIParent:GetEffectiveScale()
+        self._dragOffX = cx / s - db.xOffset
+        self._dragOffY = cy / s - db.yOffset
+        self._dragging = true
+        self:SetScript("OnUpdate", function(self)
+            if not self._dragging then return end
+            local cx, cy = GetCursorPosition()
+            local s = UIParent:GetEffectiveScale()
+            local nx = cx / s - self._dragOffX
+            local ny = cy / s - self._dragOffY
+            self:ClearAllPoints()
+            self:SetPoint("CENTER", UIParent, "CENTER", nx, ny)
+        end)
+    end)
     Minimap:SetScript("OnDragStop", function(self)
-        self:StopMovingOrSizing()
-        local cx, cy = self:GetCenter()
-        local ux, uy = UIParent:GetCenter()
-        local s = self:GetScale()
-        db.xOffset = cx * s - ux
-        db.yOffset = cy * s - uy
+        self._dragging = false
+        self:SetScript("OnUpdate", nil)
+        local cx, cy = GetCursorPosition()
+        local s = UIParent:GetEffectiveScale()
+        db.xOffset = cx / s - self._dragOffX
+        db.yOffset = cy / s - self._dragOffY
         self:ClearAllPoints()
         self:SetPoint("CENTER", UIParent, "CENTER", db.xOffset, db.yOffset)
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00ff00FarmMode:|r Position saved (" .. db.xOffset .. ", " .. db.yOffset .. ")")
+        DEFAULT_CHAT_FRAME:AddMessage("|cff00ff00FarmMode:|r Position saved (" .. math.floor(db.xOffset + 0.5) .. ", " .. math.floor(db.yOffset + 0.5) .. ")")
     end)
 end
 
 local function DisableDrag()
     Minimap:SetMovable(false)
     Minimap:RegisterForDrag()
+    Minimap._dragging = false
+    Minimap:SetScript("OnUpdate", nil)
     Minimap:SetScript("OnDragStart", nil)
     Minimap:SetScript("OnDragStop", nil)
 end
