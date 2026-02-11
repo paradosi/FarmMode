@@ -385,7 +385,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
     local icon = panel:CreateTexture(nil, "ARTWORK")
     icon:SetSize(32, 32)
     icon:SetPoint("TOPLEFT", 16, -12)
-    icon:SetTexture("Interface\\AddOns\\FarmMode\\farm_mode_warcraft_64")
+    icon:SetTexture("Interface\\AddOns\\FarmMode\\media\\textures\\farm_mode_warcraft_64")
 
     -- Title
     local title = panel:CreateFontString(nil, "OVERLAY")
