@@ -33,11 +33,11 @@ Open with `/farm config` or via Interface > AddOns > FarmMode.
 - **Zoom Level** — Minimap zoom (0 = zoomed out, 5 = zoomed in)
 - **Opacity** — Minimap transparency (30% to 100%)
 - **X / Y Offset** — Position on screen
-- **Draggable** — Left-click drag the minimap to reposition while in farm mode
+- **Draggable** — Left-click drag the minimap to reposition while in farm mode (smooth, snap-free cursor tracking)
 - **Hide Clutter** — Hides minimap buttons (zoom, tracking, zone text) for a clean view
 - **Reset Defaults** — Restore all settings to defaults
 
-All settings persist across sessions and apply live.
+All sliders are ElvUI-styled with mouse wheel support. Settings persist across sessions and apply live.
 
 ## Keybinding
 
@@ -48,6 +48,7 @@ Bind a hotkey in **Options > Keybindings > FarmMode** to toggle without typing `
 ## Compatibility
 
 - WoW TBC Classic Anniversary (Interface 20505)
+- v1.3
 
 ## License
 
