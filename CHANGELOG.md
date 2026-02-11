@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.3.1
+- Organized assets into media/ folder (screenshots, textures, art)
+- Added art assets (400px and 64px logos)
+- Added CHANGELOG.md
+
 ## v1.3
 - Redesigned sliders to ElvUI style: thin track, label centered above, min/max values flanking, editable value box below
 - Added mouse wheel support with smart step sizes (Scale: 0.1, Opacity: 5, X/Y Offset: 10)
