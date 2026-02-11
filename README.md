@@ -1,5 +1,7 @@
 # FarmMode
 
+<img src="media/art/farm_mode_warcraft_400.png" width="200" alt="FarmMode">
+
 A lightweight WoW addon that centers and enlarges the minimap for easier gathering routes.
 
 Type `/farm` to toggle. Type `/farm` again to restore.
