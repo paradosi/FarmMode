@@ -72,8 +72,8 @@ local function EnableDrag()
         local cx, cy = self:GetCenter()
         local ux, uy = UIParent:GetCenter()
         local s = self:GetScale()
-        db.xOffset = math.floor(cx * s - ux + 0.5)
-        db.yOffset = math.floor(cy * s - uy + 0.5)
+        db.xOffset = cx * s - ux
+        db.yOffset = cy * s - uy
         self:ClearAllPoints()
         self:SetPoint("CENTER", UIParent, "CENTER", db.xOffset, db.yOffset)
         DEFAULT_CHAT_FRAME:AddMessage("|cff00ff00FarmMode:|r Position saved (" .. db.xOffset .. ", " .. db.yOffset .. ")")
