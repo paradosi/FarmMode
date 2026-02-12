@@ -6,5 +6,6 @@
 ## Category-enUS: Map
 ## IconTexture: Interface\AddOns\FarmMode\media\textures\farm_mode_warcraft_64
 ## SavedVariables: FarmModeDB
+## X-Wago-ID: 56ndEaG9
 
 FarmMode.lua
