@@ -1,6 +1,6 @@
 # FarmMode
 
-<img src="media/art/farm_mode_warcraft_400.png" width="200" alt="FarmMode">
+<img src="https://raw.githubusercontent.com/paradosi/FarmMode/main/media/art/farm_mode_warcraft_400.png" width="200" alt="FarmMode">
 
 A lightweight WoW addon that centers and enlarges the minimap for easier gathering routes.
 
@@ -9,10 +9,10 @@ Type `/farm` to toggle. Type `/farm` again to restore.
 ## Screenshots
 
 **Farm Mode Off** — default minimap position
-![Farm Mode Off](media/screenshots/farm-off.jpg)
+![Farm Mode Off](https://raw.githubusercontent.com/paradosi/FarmMode/main/media/screenshots/farm-off.jpg)
 
 **Farm Mode On** — minimap centered and enlarged
-![Farm Mode On](media/screenshots/farm-on.jpg)
+![Farm Mode On](https://raw.githubusercontent.com/paradosi/FarmMode/main/media/screenshots/farm-on.jpg)
 
 ## Install
 
@@ -29,7 +29,7 @@ Type `/farm` to toggle. Type `/farm` again to restore.
 
 Open with `/farm config` or via Interface > AddOns > FarmMode.
 
-![Settings Panel](media/screenshots/farm-config.jpg)
+![Settings Panel](https://raw.githubusercontent.com/paradosi/FarmMode/main/media/screenshots/farm-config.jpg)
 
 - **Scale** — Minimap size (1.0x to 3.0x)
 - **Zoom Level** — Minimap zoom (0 = zoomed out, 5 = zoomed in)
@@ -45,7 +45,7 @@ All sliders are ElvUI-styled with mouse wheel support. Settings persist across s
 
 Bind a hotkey in **Options > Keybindings > FarmMode** to toggle without typing `/farm`.
 
-![Keybinding](media/screenshots/farm-keybind.jpg)
+![Keybinding](https://raw.githubusercontent.com/paradosi/FarmMode/main/media/screenshots/farm-keybind.jpg)
 
 ## Compatibility
 
