@@ -1,0 +1,10 @@
+package-as: FarmMode
+
+ignore:
+  - README.md
+  - CHANGELOG.md
+  - LICENSE
+  - .github
+  - .gitignore
+  - media/art
+  - media/screenshots
