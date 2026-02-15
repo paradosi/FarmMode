@@ -566,7 +566,8 @@ end
 frame:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == addonName then
         InitDB()
-        addonVersion = C_AddOns.GetAddOnMetadata(addonName, "Version") or "?"
+        local GetMeta = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
+        addonVersion = GetMeta(addonName, "Version") or "?"
         CreateOptions()
         self:UnregisterEvent("ADDON_LOADED")
     end

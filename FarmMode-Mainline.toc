@@ -1,4 +1,4 @@
-## Interface: 20505
+## Interface: 110105
 ## Title: |cff00b3ffFarmMode|r
 ## Notes: |cff00b3ffType /farm to toggle. /farm config for settings.|r
 ## Author: paradosi-Dreamscythe
