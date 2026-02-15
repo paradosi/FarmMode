@@ -4,6 +4,8 @@ local db
 local settingsCategory
 local optionsPanel
 local originalZoom
+local originalPoint = {}
+local addonVersion = "?"
 
 -- Keybinding globals
 BINDING_HEADER_FARMMODE = "FarmMode"
@@ -105,12 +107,39 @@ local function DisableDrag()
 end
 
 -- Toggle
-local function FarmOn()
+local function SaveMinimapPosition()
+    local point, relativeTo, relativePoint, x, y = Minimap:GetPoint()
+    originalPoint = {
+        point = point or "TOPRIGHT",
+        relativeTo = relativeTo or UIParent,
+        relativePoint = relativePoint or "TOPRIGHT",
+        x = x or -10,
+        y = y or -10,
+    }
     originalZoom = Minimap:GetZoom()
+end
+
+local function RestoreMinimapPosition()
+    Minimap:ClearAllPoints()
+    Minimap:SetPoint(
+        originalPoint.point or "TOPRIGHT",
+        originalPoint.relativeTo or UIParent,
+        originalPoint.relativePoint or "TOPRIGHT",
+        originalPoint.x or -10,
+        originalPoint.y or -10
+    )
+end
+
+local function FarmOn()
+    if InCombatLockdown() then
+        DEFAULT_CHAT_FRAME:AddMessage("|cffff6600FarmMode:|r Cannot toggle during combat.")
+        return
+    end
+    SaveMinimapPosition()
     Minimap:ClearAllPoints()
     Minimap:SetPoint("CENTER", UIParent, "CENTER", db.xOffset, db.yOffset)
     Minimap:SetScale(db.scale)
-    Minimap:SetZoom(db.zoom)
+    pcall(Minimap.SetZoom, Minimap, db.zoom)
     Minimap:SetAlpha(db.opacity / 100)
     if db.draggable then EnableDrag() end
     if db.hideClutter then HideMinimapClutter() end
@@ -120,12 +149,15 @@ local function FarmOn()
 end
 
 local function FarmOff()
+    if InCombatLockdown() then
+        DEFAULT_CHAT_FRAME:AddMessage("|cffff6600FarmMode:|r Cannot toggle during combat.")
+        return
+    end
     DisableDrag()
     ShowMinimapClutter()
-    Minimap:ClearAllPoints()
-    Minimap:SetPoint("TOPRIGHT", UIParent, "TOPRIGHT", -10, -10)
+    RestoreMinimapPosition()
     Minimap:SetScale(1)
-    Minimap:SetZoom(originalZoom or 3)
+    pcall(Minimap.SetZoom, Minimap, originalZoom or 3)
     Minimap:SetAlpha(1)
     farming = false
     DEFAULT_CHAT_FRAME:AddMessage("|cffff6600FarmMode:|r Off")
@@ -392,7 +424,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
     title:SetFont("Fonts\\FRIZQT__.TTF", 16, "")
     title:SetTextColor(C_ACCENT[1], C_ACCENT[2], C_ACCENT[3])
     title:SetPoint("LEFT", icon, "RIGHT", 8, 0)
-    title:SetText("FarmMode")
+    title:SetText("FarmMode v" .. addonVersion)
 
     -- Subtitle
     local desc = panel:CreateFontString(nil, "OVERLAY")
@@ -417,7 +449,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
     local zoomSlider = MakeSlider(scaleSlider, -6, "Zoom Level", 0, 5, 1, "%d")
     zoomSlider.onChange = function(v)
         db.zoom = v
-        if farming then Minimap:SetZoom(v) end
+        if farming then pcall(Minimap.SetZoom, Minimap, v) end
     end
 
     local opacitySlider = MakeSlider(zoomSlider, -6, "Opacity", 30, 100, 1, "%d%%", 5)
@@ -480,7 +512,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
         clutterCheck:SetChecked(db.hideClutter)
         if farming then
             Minimap:SetScale(db.scale)
-            Minimap:SetZoom(db.zoom)
+            pcall(Minimap.SetZoom, Minimap, db.zoom)
             Minimap:SetAlpha(db.opacity / 100)
             Minimap:ClearAllPoints()
             Minimap:SetPoint("CENTER", UIParent, "CENTER", db.xOffset, db.yOffset)
@@ -534,6 +566,7 @@ end
 frame:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == addonName then
         InitDB()
+        addonVersion = C_AddOns.GetAddOnMetadata(addonName, "Version") or "?"
         CreateOptions()
         self:UnregisterEvent("ADDON_LOADED")
     end
