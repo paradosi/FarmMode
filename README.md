@@ -58,9 +58,9 @@ Bind a hotkey in **Options > Keybindings > FarmMode** to toggle without typing `
 
 | Client | Interface | Status |
 |--------|-----------|--------|
-| Classic Era | 11507 | ✅ Supported |
+| Classic Era | 11508 | ✅ Supported |
 | TBC Classic Anniversary | 20505 | ✅ Supported |
-| Retail / Mainline | 110105 | ✅ Supported |
+| Retail / Mainline | 120001 | ✅ Supported |
 
 ## Changelog
 
