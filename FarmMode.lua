@@ -253,7 +253,7 @@ local C_TRACK   = {0.12, 0.12, 0.12}
         s:SetOrientation("HORIZONTAL")
         s:SetMinMaxValues(minVal, maxVal)
         s:SetValueStep(step)
-        s:SetObeyStepOnDrag(false)
+        if s.SetObeyStepOnDrag then s:SetObeyStepOnDrag(false) end
         s:EnableMouse(true)
         s:EnableMouseWheel(true)
 
