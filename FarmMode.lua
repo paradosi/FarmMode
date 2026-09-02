@@ -1,3 +1,25 @@
+--[[ FarmMode
+     Author: paradosi-Dreamscythe
+     MIT License
+
+     Centres and enlarges the minimap on demand for gathering routes.
+     Single file, no libraries -- deliberately, since this toggles constantly
+     and the point is to cost nothing when idle.
+
+     The hard part is RESTORING the minimap, not moving it. SaveMinimapPosition
+     snapshots the original point and zoom before farm mode touches anything,
+     and the toggle puts them back exactly; that is what lets this coexist with
+     ElvUI, SexyMap and friends. Anything you change about how the minimap is
+     anchored must be tested against those.
+
+     Ships three TOCs. The bare FarmMode.toc is the TBC Anniversary build
+     (20505) -- the client falls back to it when no flavour-specific file
+     exists -- alongside FarmMode-Mainline.toc and FarmMode_Vanilla.toc.
+
+     Cross-version note: guard newer frame METHODS, not just C_* namespaces.
+     v1.4.2 exists only because SetObeyStepOnDrag is absent on Classic Era.
+]]
+
 local addonName = ...
 local farming = false
 local db
@@ -68,6 +90,11 @@ end
 local function EnableDrag()
     Minimap:SetMovable(true)
     Minimap:RegisterForDrag("LeftButton")
+    -- The inner OnUpdate deliberately re-reads cursor position and UI scale
+    -- every frame and shadows the outer cx/cy/s -- it has to, since the whole
+    -- point is that the cursor moved. luacheck flags the shadowing; it is
+    -- correct. DisableDrag() below tears this OnUpdate down again, and must
+    -- keep doing so or it runs forever after farm mode is switched off.
     Minimap:SetScript("OnDragStart", function(self)
         local cx, cy = GetCursorPosition()
         local s = UIParent:GetEffectiveScale()
