@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.3
+- Updated for the current clients (Retail 12.1.5, TBC Anniversary 2.5.6 and Classic Era 1.15.9), so the addon no longer shows as out of date
+- Release notes on CurseForge and Wago are now this changelog instead of the commit log
+- Filled in the missing v1.3.2–v1.4.2 entries below
+
 ## v1.4.2
 - Fixed a Lua error on Classic Era: `SetObeyStepOnDrag` is only called where the client has it
 
