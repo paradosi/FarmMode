@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.4
+- Turning farm mode off now puts the minimap back at its own scale and opacity, not at 100%, so it no longer undoes SexyMap's or ElvUI's minimap size
+- "Hide minimap buttons" now works on Retail (zoom, tracking, zone text, the addon compartment and the expansion button) and hides the tracking button and top border on TBC Anniversary, which it was missing
+- Turning farm mode off only shows the buttons farm mode hid; a button you or another addon had hidden stays hidden
+- Minimap dragging no longer removes another addon's minimap drag handling when farm mode is switched off
+
 ## v1.4.3
 - Updated for the current clients (Retail 12.1.5, TBC Anniversary 2.5.6 and Classic Era 1.15.9), so the addon no longer shows as out of date
 - Release notes on CurseForge and Wago are now this changelog instead of the commit log

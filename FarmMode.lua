@@ -13,7 +13,7 @@
      anchored must be tested against those.
 
      Ships three TOCs. The bare FarmMode.toc is the TBC Anniversary build
-     (20505) -- the client falls back to it when no flavour-specific file
+     (20506) -- the client falls back to it when no flavour-specific file
      exists -- alongside FarmMode-Mainline.toc and FarmMode_Vanilla.toc.
 
      Cross-version note: guard newer frame METHODS, not just C_* namespaces.
@@ -26,7 +26,11 @@ local db
 local settingsCategory
 local optionsPanel
 local originalZoom
+local originalScale
+local originalAlpha
 local originalPoint = {}
+local savedScripts      -- another addon's Minimap drag scripts, put back by DisableDrag
+local hiddenClutter = {} -- frames farm mode hid; only these are shown again
 local addonVersion = "?"
 
 -- Keybinding globals
@@ -43,16 +47,29 @@ local defaults = {
     hideClutter = false,
 }
 
+-- Paths, not just global names: Retail keeps most minimap buttons as child keys
+-- (Minimap.ZoomIn, MinimapCluster.Tracking) and Classic has MinimapCluster.BorderTop.
+-- Whatever a client lacks resolves to nil and is skipped.
 local clutterFrames = {
-    "MinimapZoomIn",
-    "MinimapZoomOut",
+    "MinimapZoomIn", "MinimapZoomOut", "Minimap.ZoomIn", "Minimap.ZoomOut",
     "MiniMapWorldMapButton",
-    "MiniMapTracking",
-    "MinimapZoneTextButton",
+    "MiniMapTracking", "MinimapCluster.Tracking",
+    "MinimapZoneTextButton", "MinimapCluster.ZoneTextButton",
     "MinimapToggleButton",
-    "MinimapBorderTop",
+    "MinimapCluster.BorderTop",
     "GameTimeFrame",
+    "AddonCompartmentFrame",
+    "ExpansionLandingPageMinimapButton",
 }
+
+local function ResolveFrame(path)
+    local f = _G
+    for key in path:gmatch("[^.]+") do
+        if type(f) ~= "table" then return nil end
+        f = f[key]
+    end
+    return f
+end
 
 -- Event frame
 local frame = CreateFrame("Frame", "FarmModeFrame", UIParent)
@@ -73,21 +90,34 @@ local function InitDB()
 end
 
 local function HideMinimapClutter()
-    for _, name in ipairs(clutterFrames) do
-        local f = _G[name]
-        if f and f.Hide then f:Hide() end
+    for _, path in ipairs(clutterFrames) do
+        local f = ResolveFrame(path)
+        if type(f) == "table" and f.IsShown and f:IsShown() then
+            f:Hide()
+            hiddenClutter[f] = true
+        end
     end
 end
 
+-- Show only what HideMinimapClutter hid: a button the player or another addon
+-- had hidden stays hidden.
 local function ShowMinimapClutter()
-    for _, name in ipairs(clutterFrames) do
-        local f = _G[name]
-        if f and f.Show then f:Show() end
+    for f in pairs(hiddenClutter) do
+        f:Show()
     end
+    wipe(hiddenClutter)
 end
 
 -- Drag support
 local function EnableDrag()
+    if not savedScripts then
+        savedScripts = {
+            movable = Minimap:IsMovable(),
+            OnDragStart = Minimap:GetScript("OnDragStart"),
+            OnDragStop = Minimap:GetScript("OnDragStop"),
+            OnUpdate = Minimap:GetScript("OnUpdate"),
+        }
+    end
     Minimap:SetMovable(true)
     Minimap:RegisterForDrag("LeftButton")
     -- The inner OnUpdate deliberately re-reads cursor position and UI scale
@@ -125,12 +155,14 @@ local function EnableDrag()
 end
 
 local function DisableDrag()
-    Minimap:SetMovable(false)
-    Minimap:RegisterForDrag()
     Minimap._dragging = false
-    Minimap:SetScript("OnUpdate", nil)
-    Minimap:SetScript("OnDragStart", nil)
-    Minimap:SetScript("OnDragStop", nil)
+    if not savedScripts then return end -- drag was never enabled: nothing to undo
+    Minimap:RegisterForDrag()
+    Minimap:SetMovable(savedScripts.movable)
+    Minimap:SetScript("OnUpdate", savedScripts.OnUpdate)
+    Minimap:SetScript("OnDragStart", savedScripts.OnDragStart)
+    Minimap:SetScript("OnDragStop", savedScripts.OnDragStop)
+    savedScripts = nil
 end
 
 -- Toggle
@@ -144,6 +176,8 @@ local function SaveMinimapPosition()
         y = y or -10,
     }
     originalZoom = Minimap:GetZoom()
+    originalScale = Minimap:GetScale()
+    originalAlpha = Minimap:GetAlpha()
 end
 
 local function RestoreMinimapPosition()
@@ -183,9 +217,9 @@ local function FarmOff()
     DisableDrag()
     ShowMinimapClutter()
     RestoreMinimapPosition()
-    Minimap:SetScale(1)
+    Minimap:SetScale(originalScale or 1)
     pcall(Minimap.SetZoom, Minimap, originalZoom or 3)
-    Minimap:SetAlpha(1)
+    Minimap:SetAlpha(originalAlpha or 1)
     farming = false
     DEFAULT_CHAT_FRAME:AddMessage("|cffff6600FarmMode:|r Off")
 end

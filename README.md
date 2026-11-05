@@ -36,7 +36,7 @@ Open with `/farm config` or via Interface > AddOns > FarmMode.
 - **Opacity** — Minimap transparency (30% to 100%)
 - **X / Y Offset** — Position on screen
 - **Draggable** — Left-click drag the minimap to reposition while in farm mode
-- **Hide Clutter** — Hides minimap buttons (zoom, tracking, zone text) for a clean view
+- **Hide Clutter** — Hides minimap buttons (zoom, tracking, zone text, clock; on Retail also the addon compartment and expansion button) for a clean view. Only the buttons it hid come back when farm mode is turned off
 - **Reset Defaults** — Restore all settings to defaults
 
 All sliders support mouse wheel input. Settings persist across sessions and apply live.
@@ -49,7 +49,7 @@ Bind a hotkey in **Options > Keybindings > FarmMode** to toggle without typing `
 
 ## Features
 
-- Saves and restores original minimap position (compatible with ElvUI, SexyMap, etc.)
+- Saves and restores the original minimap position, scale, opacity and zoom (compatible with ElvUI, SexyMap, etc.)
 - Combat lockdown protection — cannot toggle during combat
 - Safe zoom handling with bounds checking
 - Minimal memory footprint — single file, no libraries
