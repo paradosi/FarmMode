@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.4.2
+- Fixed a Lua error on Classic Era: `SetObeyStepOnDrag` is only called where the client has it
+
+## v1.4.1
+- Multi-client support: Classic Era, TBC Anniversary and Retail TOCs
+- `GetAddOnMetadata` falls back to the global where `C_AddOns` is missing (Classic Era)
+
+## v1.4.0
+- Saves and restores the original minimap position on toggle (works alongside ElvUI, SexyMap, etc.)
+- Farm mode can no longer be toggled in combat (prevents taint)
+- Minimap zoom is set safely on clients with a lower maximum zoom
+- Settings panel title shows the addon version
+
+## v1.3.2
+- Fixed README images on Wago
+
 ## v1.3.1
 - Organized assets into media/ folder (screenshots, textures, art)
 - Added art assets (400px and 64px logos)
